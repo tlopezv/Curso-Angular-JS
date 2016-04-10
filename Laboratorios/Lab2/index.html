@@ -1,0 +1,39 @@
+
+    <!--
+    
+    Utilizaremos el metodo filter para crear un filtro personalizado que sustituye un carácter por
+    otro espeficado. 
+
+    Si solo especificamos un carácter como argumento, este será sustituido por asteriscos. 
+
+    Tiempo estimado: 30 min.
+
+    -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <title>Laboratorio 1</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+    <script type="text/javascript">
+        var miApp = angular.module('lab02', []);
+
+        //Escribe el filtro personalizado cambioLetras. Utilizaremos tres parametros datos, arg1 y arg2.
+
+        
+        miApp.controller('lab02Controlador', ['$scope', function ($scope) {
+            $scope.texto = 'AngularJS es un framework MVC de código abierto desarrollado por Google y escrito en Javascript.';
+        }]);
+    </script>
+</head>  
+<body ng-app="lab02">
+    <div ng-controller="lab02Controlador">
+        <h1>Calculos Automáticos</h1>
+        <br />
+        <p><b>Resultado:</b> {{texto | cambioLetras}}</p>
+        <p><b>Resultado:</b> {{texto | cambioLetras : 'a'}}</p>
+        <p><b>Resultado:</b> {{texto | cambioLetras : 'e' : '-'}}</p>
+    </div>
+</body>
+</html>
