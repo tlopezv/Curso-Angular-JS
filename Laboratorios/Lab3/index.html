@@ -1,0 +1,94 @@
+<!--
+    
+    Controlador 1. 
+
+    Tenemos dos etiquetas <INPUT> y dos botones <BUTTON> uno para sumar y otro para multiplicar.
+    Al pulsar los botones realizamos la operación y mostramos el resultado.
+    La operación y el resultado lo añadimos al array controlado por $rootScope.
+
+    Ejemplo y formato del objeto que añadimos al array    { fecha: new Date(), detalle: '1 + 5 = 6', resultado: 6 }
+
+
+    Controlador 2.
+
+    Mostraremos las operaciones registradas en el array del $rootScope, ordenando por el resultado
+    de la operación de menor a mayor.
+
+    Tiempo estimado: 30 min.
+
+    -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <title>Laboratorio 3</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+    <script type="text/javascript">
+        var miApp = angular.module('lab03', []).run(function($rootScope) {
+            $rootScope.operaciones = [];
+        });
+
+        //Completa el código para el controlador 1
+        miApp.controller('lab03Ctrl1', ['$scope', '$rootScope', function ($scope, $rootScope) {
+            $scope.numero1 = 0;
+            $scope.numero2 = 0;
+            $scope.resultado = 0;
+            
+            //Completa el código para suma
+            $scope.suma = function() {
+                
+                //Añadimos en el $rootScope la operación                              
+                $rootScope.operaciones.push({
+                    fecha: new Date(),
+                    detalle: $scope.numero1 + ' + ' + $scope.numero2 + ' = ' + $scope.resultado.toFixed(2),
+                    resultado: $scope.resultado                                              
+                });
+            }
+            
+            //Escribe el código para multimplicar
+            $scope.multiplica = function() {
+                
+                
+                //Añadimos en el $rootScope la operación
+            }                                              
+        }]);
+        
+        //Escribe el código para el controlador 2
+    </script>
+</head>  
+    
+    <!-- 
+    
+    Completa el código añadiendo las directivas y expresiones necesarias para mostrar los resultados.
+    Necesitaras ng-app, ng-controller, ng-model, ng-click y ng-repeat.
+    
+    -->     
+<body ng-app="lab03">
+    <div id="conteolador1">
+        <h1>Mini Calculadora</h1>
+        <br />
+        <label>Número 1</label>
+        <br />
+        <input type="text" />
+        <br />
+        <br />
+        <label>Número 2</label>
+        <br />
+        <input type="text" />
+        <br />
+        <br />
+        <button>Suma</button> <button>Multiplica</button>
+        <br />
+        <br />
+        <h3><b>Resultado:</b> {{resultado}}</h3>
+    </div>
+    <br />
+    <hr />
+    <br />
+    <div id="controlador2">
+        <h3><b>Historial de Operaciones [{{operaciones.length}}]</b></h3>
+        <p>{{operacion.detalle}}</p>
+    </div>
+</body>
+</html>
