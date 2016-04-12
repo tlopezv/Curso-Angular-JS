@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Modulo 3 - Creando un Proyecto con Angular JS</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-route.min.js"></script>
+    <script type="text/javascript">
+        var miApp = angular.module('miAplicacion', ['ngRoute']);
+
+        var miController = miApp.controller('miControlador', ['$scope', '$interval', function ($scope, $interval) {
+            $scope.mensaje1 = 'Expresiones dinámicas en Angujar JS';
+            $scope.mensaje2 = 'hacen posible el flujo en tiempo real del Modelo a la Vista';
+
+            $scope.horaActual = new Date().toLocaleTimeString();
+            $scope.numeroAleatorio = (Math.floor(Math.random() * 100));
+
+            $scope.nombre = '';
+
+            $interval(function () {
+                $scope.horaActual = new Date().toLocaleTimeString();
+            }, 1000);
+        }]);
+    </script>    
+</head>
+<body ng-app="miAplicacion">
+    <br />
+    <h1>Hola Mundo !!!</h1>
+    <h3>{{ 'Mi primera aplicación Angular JS ' + '1.5.3' }}</h3>
+    <p>Si multiplicas 10 por 2 el resultado es {{ 10 * 2}}</p>
+    <p>Expresiones más complejas (30 - 10) / 100 * 8 = {{ (30 - 10 ) / 100 * 8}}</p>
+    <p>Expresiones más complejas 2.8 - 500 + 3 = {{ 2.8 + (-500) + 3}}</p>
+    <div ng-controller="miControlador">
+        <p>{{mensaje1 + ' ' + mensaje2}}</p>
+        <p>{{mensaje1}} {{mensaje2}}.</p>
+        <p>{{mensaje2}}</p>
+        <br />
+        <p><b>Hora:</b> {{horaActual}}</p>
+        <p><b>Número Aleatorio:</b> {{numeroAleatorio}}</p>
+        <br />
+        <label>Introduce tu nombre</label>
+        <input ng-model="nombre" />
+        <br />
+        <p>El nombre introducido es {{nombre}}</p>
+    </div>
+</body>
+</html>

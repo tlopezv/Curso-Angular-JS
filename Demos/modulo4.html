@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Modulo 4 - Filtro en expresiones</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+    <script type="text/javascript">
+        var objeto = {
+            nombre: 'Antonio',
+            apellidos: 'Sanz Fernández',
+            notas: [ 8, 7.5, 5, 6.94, 3]            
+        }
+        
+        var miApp = angular.module('miAplicacion', []);
+        
+        miApp.filter('capitalize', function(){
+            var temp = function(datos, arg) {
+                var palabras = datos.split(' ');
+                
+                for(var i in palabras) {
+                    palabras[i] = palabras[i].charAt(0).toUpperCase() + palabras[i].slice(1);
+                }
+                
+                return palabras.join(' ');
+            };
+            return temp;
+        });
+
+        var miController = miApp.controller('miControlador', ['$scope', '$filter', function ($scope, $filter) {
+            $scope.t1 = 'Utilización de filtros en Angular JS';
+            $scope.t2 = $filter('uppercase')($scope.t1);
+            $scope.moneda = 12;
+            $scope.numero = 1234.895482;
+            
+            $scope.f1 = new Date();
+            $scope.f2 = $filter('date')($scope.f1, 'medium');
+            $scope.f3 = $filter('date')(new Date(), 'yyyy-MM-dd HH:mm:ss Z');
+            $scope.f4 = $filter('date')(new Date(), 'dd/MM/yyyy h:mma');
+            
+            $scope.objeto = objeto;
+            $scope.objetoJSON = $filter('json')(objeto);
+            
+            $scope.datos1 = [52, 13, 20, 8, 9, 16, 4];
+            $scope.datos2 = $filter('limitTo')('abcdef', 4, 2);
+            
+            $scope.frase = "En un lugar de la mancha de cuyo nombre no quiero acordarme ...";
+        }]);
+    </script>    
+</head>
+<body ng-app="miAplicacion">
+    <div ng-controller="miControlador">
+        <h1>{{t2}}</h1>
+        <h2>{{t1}}</h2>
+        <p>{{t1 | uppercase | lowercase}}</p>
+        <br />
+        <p>Importe: {{moneda | currency : '€' : 4}}</p>
+        <p>Número: {{-numero | number : 4}}</p>
+        <br />
+        <p>{{f1 | date : 'fullDate'}}</p>
+        <p>{{f1 | date : 'dd-MM-yy h:mma, EEEE'}}</p>
+        <p>{{f2}}</p>
+        <p>{{f3}}</p>
+        <p>{{f4}}</p>
+        <br />
+        <p>Objeto en JSON: {{objeto | json}}</p>
+        <p>Objeto en JSON: {{objetoJSON}}</p>
+        <br />
+        <p>Filtro LimitTo: {{datos1 | limitTo : 3 : 2}}</p>
+        <p>Filtro LimitTo: {{datos2}}</p>
+        <p>Filtro LimitTo: {{ 12345678 | limitTo : 4}}</p>
+        <br />
+        <p>Filtro personalizado: {{frase | capitalize}}</p>
+    </div>
+</body>
+</html>
