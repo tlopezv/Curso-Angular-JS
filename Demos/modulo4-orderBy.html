@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Modulo 4 - Filtro en expresiones (orderBy)</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+    <script type="text/javascript">
+        var miApp = angular.module('miAplicacion', []);
+
+        var miController = miApp.controller('miControlador', ['$scope', function ($scope) {
+            $scope.frutas = [{
+                nombre: 'Kiwi',
+                color: 'Verde',
+                propiedades: 'rica en vitamina C'
+            }, {
+                nombre: 'Platano',
+                color: 'Amarillo',
+                propiedades: 'rica en magnesio y potasio'
+            }, {
+                nombre: 'Arandanos',
+                color: 'Azul Oscuro',
+                propiedades: 'rica en antioxidantes'
+            }];
+            
+            $scope.buscarFruta = '';
+        }]);
+    </script>    
+</head>
+<body ng-app="miAplicacion">
+    <h1>Listado de Frutas</h1>
+    <div ng-controller="miControlador">
+        <ul>
+            <li ng-repeat="fruta in frutas | orderBy : 'nombre'">{{fruta.nombre}}</li>
+        </ul>
+        <br />
+        <label>¿ Qué fruta buscas ?</label><br />
+        <input type="text" ng-model="buscarFruta" />
+        <ul>
+            <li ng-repeat="fruta in frutas | filter : buscarFruta | orderBy : '-nombre'">
+                <h2>{{fruta.nombre}}</h2>
+                <p>Fruta de color {{fruta.color}} conocida por ser {{fruta.propiedades}}</p>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>

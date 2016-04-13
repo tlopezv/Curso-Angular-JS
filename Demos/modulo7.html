@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Modulo 7 - Directivas de Angular JS</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+    <script type="text/javascript">
+        var miApp = angular.module('miAplicacion', []);
+
+        miApp.directive('saludo', function() {
+            var valoresInternos = {};
+            
+            valoresInternos.restrict = 'AECM';
+            valoresInternos.template = 'Hola, bienvenidos al mundo de las directivas !!!';
+            
+            return valoresInternos;
+        });
+        
+        miApp.directive('mensaje', function () {
+            return {
+                restrict: 'AECM',
+                link: function(scope, elem, attrs){
+                    alert('Estamos trabajando ...');
+                }
+            }                                
+        });
+        
+        miApp.directive('prueba', function() {
+            return {
+                restrict: 'AECM',
+                template:'<p><b>Nombre:</b> {{registro.nombre}} {{registro.apellidos}}, <b>Teléfono:</b> <a href="tel:{{registro.telefono}}">{{registro.telefono}}</a></p>'
+            }
+        });
+        
+        miApp.controller('miControlador', function ($scope) {
+            $scope.agenda = [{
+                nombre: 'Juan',
+                apellidos: 'Sánchez Sanz',
+                telefono: '555-127-392'
+            }, {
+                nombre: 'Ana',
+                apellidos: 'Rojas Sánchez',
+                telefono: '555-325-111'
+            }, {
+                nombre: 'Antonio',
+                apellidos: 'Calderón Plaza',
+                telefono: '655-322-110'
+            }, {
+                nombre: 'Eva',
+                apellidos: 'Muñoz Sanz',
+                telefono: '552-966-412'
+            }, {
+                nombre: 'Samuel',
+                apellidos: 'Solano García',
+                telefono: '677-425-112'
+            }];
+            
+            $scope.nombre = '';
+            $scope.apellidos = '';
+        });
+    </script>    
+</head>
+<body ng-app="miAplicacion">  
+    <div ng-controller="miControlador">
+        <p saludo></p>
+        <saludo></saludo>
+        <p class="saludo"></p>
+        <!-- directive: mensaje -->
+        <mensaje></mensaje>
+        <br />
+        <br />
+        <prueba ng-repeat="registro in agenda"></prueba>
+    </div>
+</body>
+</html>

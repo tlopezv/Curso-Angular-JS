@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Modulo 5 - Controladores en Angular JS</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+    <script type="text/javascript">
+        var miApp = angular.module('miAplicacion', []).run(function($rootScope, $filter) {
+            $rootScope.nombre = 'Angular JS';
+            $rootScope.fecha = $filter('date')(new Date(), 'dd-MM-yyyy hh:mm:ss:sss');
+        });
+
+        miApp.controller('ctrl1', ['$scope', '$rootScope', function ($scope, $rootScope) {
+            $scope.info = 'Controlador 1';
+            $scope.nombre = 'mi curso de Angular JS';
+            $rootScope.numero = 1;
+        }]);
+        
+        miApp.controller('ctrl2', ['$scope', '$rootScope', function ($scope, $rootScope) {
+            $scope.info = 'Controlador 2';
+            $rootScope.numero = 2;
+        }]);
+        
+        miApp.controller('ctrl3', ['$scope', '$filter', '$rootScope', function ($scope, $filter, $rootScope) {
+            $scope.info = 'Controlador 3';
+            $scope.fecha = $filter('date')(new Date(), 'dd-MM-yyyy hh:mm:ss:sss');
+            
+            $scope.actualiza = function() {
+                $scope.fecha = $filter('date')(new Date(), 'dd-MM-yyyy hh:mm:ss:sss');
+            }
+            
+            $scope.actualizaRoot = function() {
+                $rootScope.fecha = $filter('date')(new Date(), 'dd-MM-yyyy hh:mm:ss:sss');
+            }
+        }]);
+        
+        miApp.controller('ctrl4', ['$scope', '$rootScope', function ($scope, $rootScope) {
+            var ModeloVista = this;
+            ModeloVista.info = 'Controlador 4';
+        }]);
+    </script>    
+</head>
+<body ng-app="miAplicacion">
+    <h1>Controladores en Angular JS</h1>
+    
+    <div ng-controller="ctrl1">
+        <p><b>{{info}} de {{nombre}}</b></p>
+        <p><b>{{info}} de {{$parent.nombre}}</b></p>
+        <p>Número {{numero}}</p>
+        <p>Fecha: {{fecha}}</p>
+    </div>
+    
+    <div ng-controller="ctrl2">
+        <p><b>{{info}} de {{nombre}}</b></p>
+        <p>Número {{numero}}</p>
+        <p>Fecha: {{fecha}}</p>
+    </div>
+    
+    <div ng-controller="ctrl3">
+        <p><b>{{info}} de {{nombre}}</b></p>
+        <p>Número {{numero}}</p>        
+        <p>Fecha Scope: {{fecha}}</p>
+        <p>Fecha Root: {{$parent.fecha}}</p>
+        <button ng-click="actualiza()">Actualizar Fecha</button> &nbsp; <button ng-click="actualizaRoot()">Actualizar Fecha Root</button>
+    </div>
+    
+    <div ng-controller="ctrl4 as vm">
+        <p><b>{{vm.info}} de {{nombre}}</b></p>
+        <p>Número {{numero}}</p>
+        <p>Fecha: {{fecha}}</p>
+    </div>
+</body>
+</html>
