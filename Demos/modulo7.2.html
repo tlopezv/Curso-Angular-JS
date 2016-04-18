@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Modulo 7 - Directivas de Angular JS</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+    <script type="text/javascript">
+        var miApp = angular.module('miAplicacion', []);
+        
+        miApp.controller('miControlador', function ($scope) {
+            $scope.agenda = [{
+                nombre: 'Juan',
+                apellidos: 'Sánchez Sanz',
+                telefono: '555-127-392',
+                oficina: 'Madrid',
+                disponible: true
+            }, {
+                nombre: 'Ana',
+                apellidos: 'Rojas Sánchez',
+                telefono: '555-325-111',
+                oficina: 'Valencia',
+                disponible: true
+            }, {
+                nombre: 'Antonio',
+                apellidos: 'Calderón Plaza',
+                telefono: '655-322-110',
+                oficina: 'Madrid',
+                disponible: false
+            }, {
+                nombre: 'Eva',
+                apellidos: 'Muñoz Sanz',
+                telefono: '552-966-412',
+                oficina: 'Barcelona',
+                disponible: false                
+            }, {
+                nombre: 'Samuel',
+                apellidos: 'Solano García',
+                telefono: '677-425-112',
+                oficina: 'Barcelona',
+                disponible: true                
+            }];
+            
+            $scope.items = ['suite', 'superior', 'estándar'];
+            
+            $scope.requerido = false;
+            $scope.usuario = "Invitado";
+            $scope.password = "123456";
+            $scope.mayor = false;
+        });
+    </script>    
+</head>
+<body ng-app="miAplicacion">  
+    <div ng-controller="miControlador" style="padding: 30px;">
+        <form name="formulario">
+            <h1 style="color:red" ng-if="!formulario.$valid">Formulario Incompleto</h1>
+            <br />
+            <label>Usuario</label>
+            <input name="user" type="text" ng-model="usuario" ng-required="requerido" />
+            <br />
+            
+            <input type="checkbox" ng-model="requerido" /> Usuario Requerido
+            <br /><br />            
+            <code ng-show="requerido">Usuario Requerido {{requerido}}</code>
+            <code ng-show="!requerido">Usuario No Requerido {{requerido}}</code>            
+            <br /><br />
+            
+            <label>Password</label>
+            <input name="pass" type="password" ng-model="password" ng-readonly="!formulario.user.$valid" />
+            <br /><br />
+            
+            <label>Código de País</label>
+            <input name="code" type="text" ng-model="pais" ng-pattern="'[A-Z]{3}'" required />
+            <br /><br />
+            
+            <label>Modelo</label>
+            <input name="modelo" type="text" ng-model="modelo" ng-maxlength="10" ng-minlength="5" />
+            <br /><br />
+                       
+            <input name="" type="checkbox" ng-model="mayor" ng-true-value="'Mayor de Edad'" ng-false-value="'Menor de Edad'" /> {{mayor}}
+            <br /><br />
+            
+            <label>Personal</label>
+            <select ng-model="personal" ng-options="(agente.nombre + ' ' + agente.apellidos) for agente in agenda">
+                <option value="">Selecciona un Agente</option>
+            </select>
+            <br />Select: {{personal}}<br />
+            <br /><br />
+            
+            <label>Personal</label>
+            <select ng-model="personal2" ng-options="(agente.nombre + ' ' + agente.apellidos) group by agente.oficina for agente in agenda">
+            </select>
+            <br />Select: {{personal2}}<br />
+            <br /><br />
+            
+            <label>Personal</label>
+            <select ng-model="personal3" ng-options="(agente.nombre + ' ' + agente.apellidos) group by agente.oficina disable when !agente.disponible for agente in agenda">
+            </select>
+            <br />Select: {{personal2}}<br />
+            <br /><br />    
+            
+            
+            <select ng-model="selection" ng-options="item for item in items">
+            </select>
+            <br />
+            <code>selection={{selection}}</code>
+            <hr/>
+            <div ng-switch on="selection">
+                <div ng-switch-when="suite">Habitación Suite</div>
+                <div ng-switch-when="superior">Habiltación Superior</div>
+                <div ng-switch-default>Habitación Estándar</div>
+            </div>            
+            <br /><br />
+            
+            <input type="submit" value="Enviar" ng-disabled="!formulario.$valid" />            
+            <br /><br />
+            <code>Usuario = {{usuario}}</code><br>
+            <code>formulario.user.$valid = {{formulario.user.$valid}}</code><br />
+            <code>formulario.user.$error = {{formulario.user.$error}}</code><br />
+            <code>formulario.code.$valid = {{formulario.code.$valid}}</code><br />
+            <code>formulario.code.$error = {{formulario.code.$error}}</code><br />   
+            <code>formulario.modelo.$valid = {{formulario.modelo.$valid}}</code><br />
+            <code>formulario.modelo.$error = {{formulario.modelo.$error}}</code><br />              
+            <code>formulario.$valid = {{formulario.$valid}}</code><br />
+            <code>formulario.$error.required = {{!!formulario.$error.required}}</code><br />
+            <br />
+            {{agenda | json}}
+        </form>
+    </div>
+</body>
+</html>

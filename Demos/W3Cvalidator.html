@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>W3C Validator</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+    <script type="text/javascript">
+        var miApp = angular.module('miAplicacion', []);
+
+        var miController = miApp.controller('miControlador', ['$scope', function ($scope) {
+            $scope.horaActual = new Date().toLocaleTimeString();
+            $scope.numeroAleatorio = (Math.floor(Math.random() * 100));
+            $scope.nombre = '';
+        }]);
+    </script>    
+</head>
+<body ng-app="miAplicacion">
+    <br />
+    <h1>Hola Mundo !!!</h1>
+    <div ng-controller="miControlador">
+        <p><b>Hora:</b> {{horaActual}}</p>
+        <p><b>Número Aleatorio:</b> {{numeroAleatorio}}</p>
+        <br />
+        <label>Introduce tu nombre</label>
+        <input ng-model="nombre" />
+        <br />
+        <p>El nombre introducido es {{nombre}}</p>
+    </div>
+</body>
+</html>
