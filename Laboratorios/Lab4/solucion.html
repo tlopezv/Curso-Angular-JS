@@ -1,0 +1,169 @@
+<!--
+    
+    1. Partiendo de una agenda inicial podemos añadir nuevos registros a la agenda.
+    2. Mostramos el listado de la agenda ordenado y filtrado.
+    3. Al introducir el apellidos contamos los caracteres.
+    4. Al introducir el número de teléfono validamos que solo se introduzcan número y guiones.
+
+    Tiempo estimado: 30 min.
+
+    -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <title>Laboratorio 4</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+    <script type="text/javascript">
+        var miApp = angular.module('lab04', []);
+
+        miApp.controller('lab04Ctrl1', ['$scope', '$rootScope', function ($scope, $rootScope) {
+            $scope.agenda = [{
+                nombre: 'Juan',
+                apellidos: 'Sánchez Sanz',
+                telefono: '555-127-392'
+            }, {
+                nombre: 'Ana',
+                apellidos: 'Rojas Sánchez',
+                telefono: '555-325-111'
+            }, {
+                nombre: 'Antonio',
+                apellidos: 'Calderón Plaza',
+                telefono: '655-322-110'
+            }, {
+                nombre: 'Eva',
+                apellidos: 'Muñoz Sanz',
+                telefono: '552-966-412'
+            }, {
+                nombre: 'Samuel',
+                apellidos: 'Solano García',
+                telefono: '677-425-112'
+            }];
+
+
+            //Creamos las variables nombre, apellidos y telefono
+            $scope.nombre = '';
+            $scope.apellidos = '';
+            $scope.telefono = '';
+
+            //Creamos las variables buscar, orden con el valor inicial de +nombre y contador con valor 0
+            $scope.buscar = '';
+            $scope.orden = '+nombre';
+            $scope.contador = 0;
+
+            //Completamos la funcion nuevoRegistro que añade un nuevo registro a la agenda
+            $scope.nuevoRegistro = function () {
+                $scope.agenda.push({
+                    nombre: $scope.nombre,
+                    apellidos: $scope.apellidos,
+                    telefono: $scope.telefono
+                });
+                $scope.nombre = '';
+                $scope.apellidos = '';
+                $scope.telefono = '';
+            }
+
+            //Si el valor de la variable orden es igual +nombre le asignamos el valor -nombre en cualquier otro caso +nombre
+            $scope.ordenarPorNombre = function () {
+                $scope.orden = ($scope.orden == '+nombre' ? '-nombre' : '+nombre');
+            }
+
+            //Si el valor de la variable orden es igual +apellidos le asignamos el valor -apellidos en cualquier otro caso +nombre
+            $scope.ordenarPorApellidos = function () {
+                $scope.orden = ($scope.orden == '+apellidos' ? '-apellidos' : '+apellidos');
+            }
+
+            //Si el valor de la variable orden es igual +telefono le asignamos el valor -telefono en cualquier otro caso +nombre
+            $scope.ordenarPorTelefono = function () {
+                $scope.orden = ($scope.orden == '+telefono' ? '-telefono' : '+telefono');
+            }
+
+            $scope.soloNumeros = function (e) {
+                var key = e.charCode || e.keyCode || 0;
+
+                if ((key >= 48 && key <= 57) || (key >= 96 && key <= 105) || key == 109 || key == 189 ||  key == 8) {
+                    return true;
+                } else {
+                    e.preventDefault();
+                }
+            }
+            
+            $scope.mostrar = true;
+            $scope.mostrarFiltro = function () {
+                $scope.mostrar = !$scope.mostrar;
+            }
+            
+            $scope.coordenadas = function(e) {
+                $scope.x = e.clientX;
+                $scope.y = e.clientY;
+            }
+        }]);
+    </script>
+</head>  
+<body ng-app="lab04">
+    <div ng-controller="lab04Ctrl1" ng-mousemove="coordenadas($event)">
+        <h1>Mini Agenda</h1>
+        <br />
+        <p>Coordinates: {{'x:' + x + ' y:' + y}}</p>
+        <br />
+        <label>Nombre</label>
+        <br />
+        <!-- Añade la directiva ng-model -->
+        <input type="text" ng-model="nombre" />
+        <br />
+        <br />
+        <label>Apellidos</label>
+        <br />
+        <!-- Añade la directiva ng-model -->
+        <input type="text" ng-model="apellidos" ng-change="contador=apellidos.length" />
+        <br /><span>{{contador}} caracteres</span>
+        <br />
+        <br />
+        <label>Teléfono</label>
+        <br />
+        <!-- Añade la directiva ng-click -->
+        <input type="text" ng-model="telefono" ng-keydown="soloNumeros($event)" maxlength="11" />        
+        <br />
+        <br />
+        <!-- Añade la directiva ng-click -->
+        <button ng-click="nuevoRegistro()">Añadir</button>
+        <br />
+        <br />
+        <h3><b>Listado ordenador por {{orden}}</b></h3>
+        <br />
+        <br />
+        <div ng-show="mostrar">
+            <label>Buscar</label>
+            <!-- Añade la directiva ng-model -->
+            <input type="text" ng-model="buscar" />
+            <br />
+            <br />
+        </div>
+        <!-- Añade la directivas ng-click -->
+        <button ng-click="ordenarPorNombre()">Nombre</button> <button ng-click="ordenarPorApellidos()">Apellidos</button> <button ng-click="ordenarPorTelefono()">Teléfono</button> <button ng-click="mostrarFiltro()">Filtro</button>
+        <br />
+        <div>
+            <table>
+                <!-- Añade la directiva ng-repeat, ordena utilizando orden y filtra utilizando buscar -->
+                <tr ng-repeat="registro in agenda | orderBy : orden | filter : buscar">
+                    <td>{{registro.nombre}}</td>
+                    <td>{{registro.apellidos}}</td>
+                    <td>{{registro.telefono}}</td>
+                </tr>
+            </table>
+            <hr />
+            <table>
+                <tr ng-repeat="registro in agenda | orderBy : orden | filter : buscar">
+                    <td ng-if="$odd" style="background-color:#f1f1f1">{{registro.nombre}}</td>
+                    <td ng-if="$even">{{registro.nombre}}</td>
+                    <td ng-if="$odd" style="background-color:#f1f1f1">{{registro.apellidos}}</td>
+                    <td ng-if="$even">{{registro.apellidos}}</td>
+                    <td ng-if="$odd" style="background-color:#f1f1f1">{{registro.telefono}}</td>
+                    <td ng-if="$even">{{registro.telefono}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
