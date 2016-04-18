@@ -1,0 +1,92 @@
+<!--
+    
+    Controlador 1. 
+
+    Tenemos dos etiquetas <INPUT> y dos botones <BUTTON> uno para sumar y otro para multiplicar.
+    Al pulsar los botones realizamos la operación y mostramos el resultado.
+    La operación y el resultado lo añadimos al array controlado por $rootScope.
+
+    Ejemplo y formato del objeto que añadimos al array    { fecha: new Date(), detalle: '1 + 5 = 6', resultado: 6 }
+
+
+    Controlador 2.
+
+    Mostraremos las operaciones registradas en el array del $rootScope, ordenando por el resultado
+    de la operación de menor a mayor.
+
+    Tiempo estimado: 30 min.
+
+    -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <title>Laboratorio 3</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+    <script type="text/javascript">
+        var miApp = angular.module('lab03', []).run(function($rootScope) {
+            $rootScope.operaciones = [];
+        });
+
+        //Completa el código para el controlador 1
+        miApp.controller('lab03Ctrl1', ['$scope', '$rootScope', function ($scope, $rootScope) {
+            $scope.numero1 = 0;
+            $scope.numero2 = 0;
+            $scope.resultado = 0;
+            
+            $scope.suma = function() {
+                $scope.resultado = parseFloat($scope.numero1) + parseFloat($scope.numero2);
+                                              
+                $rootScope.operaciones.push({
+                    fecha: new Date(),
+                    detalle: $scope.numero1 + ' + ' + $scope.numero2 + ' = ' + $scope.resultado.toFixed(2),
+                    resultado: $scope.resultado                                              
+                });
+            }
+                                 
+            $scope.multiplica = function() {
+                $scope.resultado = parseFloat($scope.numero1) * parseFloat($scope.numero2);
+                                  
+                $rootScope.operaciones.push({
+                    fecha: new Date(),
+                    detalle: $scope.numero1 + ' x ' + $scope.numero2 + ' = ' + $scope.resultado.toFixed(2),
+                    resultado: $scope.resultado                                              
+                });                                              
+            }                                              
+        }]);
+        
+        //Escribe el código para el controlador 2
+        miApp.controller('lab03Ctrl2', ['$scope', '$rootScope', function ($scope, $rootScope) {
+                                             
+        }]);
+    </script>
+</head>  
+<body ng-app="lab03">
+    <div ng-controller="lab03Ctrl1">
+        <h1>Mini Calculadora</h1>
+        <br />
+        <label>Número 1</label>
+        <br />
+        <input type="text" ng-model="numero1" />
+        <br />
+        <br />
+        <label>Número 2</label>
+        <br />
+        <input type="text" ng-model="numero2" />
+        <br />
+        <br />
+        <button ng-click="suma()">Suma</button> <button ng-click="multiplica()">Multiplica</button>
+        <br />
+        <br />
+        <h3><b>Resultado:</b> {{resultado}}</h3>
+    </div>
+    <br />
+    <hr />
+    <br />
+    <div ng-controller="lab03Ctrl2">
+        <h3><b>Historial de Operaciones [{{operaciones.length}}]</b></h3>
+        <p ng-repeat="operacion in operaciones | orderBy : '-resultado'">{{operacion.detalle}}</p>
+    </div>
+</body>
+</html>
