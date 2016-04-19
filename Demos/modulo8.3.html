@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Modulo 8 - Acceso a datos remoto con Angular JS</title>
+    
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>    
+    <script type="text/javascript">
+        var miApp = angular.module('miAplicacion', []);
+
+        var miController = miApp.controller('miControlador', ['$scope', '$http', function ($scope, $http) {
+            $scope.referencia = '';
+            $scope.producto = '';
+            
+            $scope.consulta = function () {
+                if ($scope.referencia == '' || isNaN($scope.referencia)) return;
+
+                $http.jsonp(('http://www.programadores.network/curso-angular-js/productos.ashx?format=jsonp&callback=JSON_CALLBACK&id=' + $scope.referencia))
+                    .success(function (respuesta) {
+                        $scope.producto = respuesta;
+                    });
+            }
+        }]);
+    </script>    
+</head>
+<body ng-app="miAplicacion">
+    <div class="container" ng-controller="miControlador">
+        <br />
+        <br />
+        <div class="row">
+            <div class="col-lg-3"> </div>
+            <div class="col-lg-6 text-center"> 
+                <div class="from-group">
+                    <label>Referencia del Producto</label>
+                    <input class="form-control text-center" ng-model="referencia" />
+                    <br />
+                    <button class="btn btn-primary" ng-click="consulta()">Consultar</button>
+                </div>
+            </div>
+            <div class="col-lg-3"> </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-lg-2"> </div>
+            <div class="col-lg-8 text-center">
+                <span>
+                    <b>Producto ID:</b> {{producto[0].ProductID}} <br />
+                    <b>Nombre:</b> {{producto[0].ProductName}} <br />
+                    <b>Precio:</b> {{producto[0].UnitPrice | number : 2}} <br />
+                </span>
+            </div>
+            <div class="col-lg-2"> </div>
+        </div>
+    </div>
+</body>
+</html>

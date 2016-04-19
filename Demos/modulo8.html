@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Modulo 8 - Acceso a datos remoto con Angular JS</title>
+    
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>    
+    <script type="text/javascript">
+        var miApp = angular.module('miAplicacion', []);
+
+        miApp.filter('filtrado', function () {
+            var temp = function (datos, arg) {
+                var rates = {}
+
+                for (rate in datos)
+                {
+                    if (arg == '') {
+                        rates[rate] = datos[rate];
+                    } else {
+                        if (rate == arg) rates[rate] = datos[rate];
+                    }
+                }
+
+                return rates;
+            };
+            return temp;
+        });
+
+        var miController = miApp.controller('miControlador', ['$scope', '$http', '$filter', function ($scope, $http, $filter) {
+            $scope.data = '';
+            $scope.rates = '';
+            $scope.error = '';
+            $scope.importe = '';
+            $scope.divisa = '';
+            $scope.importeValido = false;
+            $scope.estado = '';
+            $scope.estadoTexto = '';
+
+            $scope.validaImporte = function () {
+                $scope.importeValido = !isNaN($scope.importe) && $scope.importe != '';
+            }
+
+
+            $http.get('http://api.fixer.io/latest?symbols')
+            .success(function (datos, estado, obj1, obj2) {
+                $scope.rates = datos.data.rates;
+                $scope.estado = estado;
+            })
+            .error(function (error, estado, obj1, obj2) {
+                $scope.error = error;
+                $scope.estado = estado;
+            });
+
+            $http.get('http://api.fixer.io/latest?symbols').then(function (datos) {
+                $scope.data = datos;
+                $scope.rates = datos.data.rate;
+                $scope.estado = datos.status;
+                $scope.estadoTexto = datos.statusText;
+            });
+
+            $http({
+                method: 'GET',
+                url: 'http://api.fixer.io/latest?symbols'
+            }).then(function (datos) {
+                $scope.data = datos;
+                $scope.rates = datos.data.rates;
+                $scope.estado = datos.status;
+                $scope.estadoTexto = datos.statusText;
+            }, function (error) {
+                $scope.error = error;
+            });
+            
+        }]);
+    </script>    
+</head>
+<body ng-app="miAplicacion">
+    <div class="container" ng-controller="miControlador">
+        <br />
+        <br />
+        <div class="row">
+            <div class="col-lg-3"> </div>
+            <div class="col-lg-6 text-center">
+                <div class="from-group">
+                    <label>Importe en Euros</label>
+                    <input type="text" class="form-control" ng-model="importe" ng-change="validaImporte()" />
+                </div> 
+            </div>
+            <div class="col-lg-3"> </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-lg-3"> </div>
+            <div class="col-lg-6 text-center"> 
+                <div class="from-group">
+                    <label>Divisas</label>
+                    <select class="form-control" ng-model="divisa">
+                        <option value="">Todas las divisas</option>
+                        <option ng-repeat="(key, value) in rates" value"{{key}}">{{key}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-3"> </div>
+        </div>
+        <br />
+        <div class="row" ng-show="importeValido">
+            <div class="col-lg-2"> </div>
+            <div class="col-lg-8 text-center">
+                 <span ng-repeat="(k, v) in rates | filtrado : divisa">{{importe * v | number : 2}} {{k}}  *  tasa de intercambio {{v | number : 5}}<br /></span>
+            </div>
+            <div class="col-lg-2"> </div>
+        </div>
+    </div>
+</body>
+</html>
