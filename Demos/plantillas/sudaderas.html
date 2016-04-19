@@ -1,0 +1,14 @@
+<div style="padding: 40px;">
+    <h3>Estamos en Sudaderas</h3>
+    <br /><br /><br />
+    <label>Color</label><br />
+    <select ng-model="color" ng-options="color for color in colores" ng-selected="cambiaColor()"></select>
+    <br /><br /><br />
+    <div ng-switch="color">
+        <img src="http://www.roly.es/pics/large/SU1087_03_2_1_3.jpg" style="width:25%; height:auto;" ng-switch-when="amarilla" />
+        <img src="http://www.roly.es/pics/large/SU1087_60_2_1_3.jpg" style="width:25%; height:auto;" ng-switch-when="roja" />
+        <img src="http://www.roly.es/pics/large/SU1087_05_2_1_3.jpg" style="width:25%; height:auto;" ng-switch-when="azul" />
+        <img src="http://www.roly.es/pics/large/SU1087_01_2_1_3.jpg" style="width:25%; height:auto;" ng-switch-when="blanca" />
+    </div>
+    <br /><br /><br />
+</div>
