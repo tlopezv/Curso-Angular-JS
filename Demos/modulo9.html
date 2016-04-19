@@ -32,10 +32,63 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-route.min.js"></script>
     <script type="text/javascript">
- 
+        var miApp = angular.module('miAplicacion', ['ngRoute']);
+
+        miApp.config(['$routeProvider', function ($routeProvider) {
+            $routeProvider
+            .when("/", {
+                controller: "appCtrl",
+                templateUrl: "plantillas/home.html"
+            })
+            .when("/camisetas", {
+                controller: "appCtrl",
+                templateUrl: "plantillas/camisetas.html"
+            })
+            .when("/pantalones", {
+                controller: "appCtrl",
+                templateUrl: "plantillas/pantalones.html"
+            })
+            .when("/sudaderas", {
+                redirectTo: "/sudaderas/amarilla"
+            })
+            .when("/sudaderas/:color", {
+                controller: "appCtrl",
+                templateUrl: "plantillas/sudaderas.html"
+            })
+            .when("/home", {
+                redirectTo: "/"
+            })
+            .otherwise({
+                redirectTo: "/"
+            });
+        }]);
+
+        miApp.controller('appCtrl', ['$scope', '$routeParams', '$location', function ($scope, $routeParams, $location) {
+            $scope.colores = ['amarilla', 'roja', 'blanca', 'azul'];
+            $scope.color = $routeParams.color;
+
+            $scope.cambiaColor = function () {
+                $location.url('/sudaderas/' + $scope.color);
+            }
+        }]);
+
+        miApp.controller('appCtrl1', ['$scope', function ($scope) {
+        }]);
     </script>    
 </head>
 <body ng-app="miAplicacion">
-
+    <br />
+    <nav>
+        <ul>
+            <li><a href="#/home">Home</a></li>
+            <li><a href="#/camisetas">Camisetas</a></li>
+            <li><a href="#/pantalones">Pantalones</a></li>
+            <li><a href="#/sudaderas">Sudaderas</a></li>
+        </ul>
+    </nav>
+    <hr />
+    <br />
+    <div ng-view></div>
+    <br />
 </body>
 </html>
