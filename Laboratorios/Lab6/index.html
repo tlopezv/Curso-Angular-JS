@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <style type="text/css">
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        li {
+            float: left;
+        }
+
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        li a:hover {
+            background-color: #111;
+        }    
+    </style>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Modulo 9 - Plantillas y Rutas con Angular JS</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-route.min.js"></script>
+    <script type="text/javascript">
+        var miApp = angular.module('miAplicacion', ['ngRoute']);
+        
+        //Configura las rutas / ; refrescos; cervezas; licores/:licor
+        //Cada plantilla utiliza un controlador
+        miApp.config(['$routeProvider', function ($routeProvider) {
+
+        }]);
+
+        miApp.controller('appCtrl1', ['$scope', function ($scope) {
+        }]);
+        
+        miApp.controller('appCtrl2', ['$scope', function ($scope) {
+            $scope.items = ['Cocacola', 'Naranja', 'Limón', 'Tonica'];
+        }]);
+        
+        miApp.controller('appCtrl3', ['$scope', function ($scope) {
+            $scope.items = ['Cerveza de Trigo', 'Cerveza de Malta', 'Negra Stout'];
+        }]);
+                
+        miApp.controller('appCtrl4', ['$scope', '$routeParams', '$location', function ($scope, $routeParams, $location) {
+            $scope.items = ['vodka', 'ron', 'ginebra', 'whiskey'];
+            $scope.licor = $routeParams.licor;
+            
+            switch($scope.licor){
+                case 'vodka':
+                    $scope.marcas = ['Eristoff', 'Absolut', 'Smirnoff'];
+                    break;
+                case 'ron':
+                    $scope.marcas = ['Havana', 'Cacique', 'Legendario'];
+                    break;
+                case 'ginebra':
+                    $scope.marcas = ['Larios', 'Bombay Sapphire', 'Tanquerai'];
+                    break;
+                case 'whiskey':
+                    $scope.marcas = ['Ballantine', 'J&B', 'Johnnie Walker'];
+                    break;            
+            }
+        }]);
+    </script>    
+ 
+</head>
+<body ng-app="miAplicacion">
+    <br />
+    <nav>
+        <ul>
+            <li><a href="#/home">Home</a></li>
+            <li><a href="#/refrescos">Refrescos</a></li>
+            <li><a href="#/cervezas">Cervezas</a></li>
+            <li><a href="#/licores">Licores</a></li>
+        </ul>
+    </nav>
+    <hr />
+    <br />
+    <!-- Determina el contenedor para la vista -->
+    <div ng-view></div>
+    <br />
+
+    <script type="text/ng-template" id="home.html">
+        <div style="padding:40px;">
+            <h1>Estamos en la Home</h1>
+        </div>
+    </script>
+    
+    <script type="text/ng-template" id="refrescos.html">
+        <div style="padding:40px;">
+            <h1>Estamos en la Refrescos</h1>
+            <p ng-repeat="item in items">{{item}}</p>
+        </div>
+    </script>
+    
+    <!-- Escribe el código completo de la plantilla -->
+    <script type="text/ng-template" id="cervezas.html">
+
+    </script>
+    
+    <!-- Completa el código de las directivas y el href -->
+    <script type="text/ng-template" id="licores.html">
+        <div style="padding:40px;">
+            <h1>Estamos en la Licores {{licor}}</h1>
+            <p ng-repeat=""><a href="">{{item}}</a></p>
+            <br />
+            <div>
+                <h4>Marcas</h4>
+                <p ng-repeat="">{{marca}}</p>
+            </div>
+        </div>
+    </script>   
+</body>
+</html>
