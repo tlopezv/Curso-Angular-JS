@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Modulo 10 - Factorias de Angular JS</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+    
+    <script type="text/javascript">
+        var miApp = angular.module('miAplicacion', []);
+        
+        miApp.factory('descargas', function(){
+            var datos = ['Manual de Javascript', 'Manual de C#', 'Manual de Angular JS'];
+    
+            var interfaz = {
+                nombre: 'Javier Sánz',
+                getDownloads: function(){
+                    return datos;
+                },
+                newDonwload: function(descarga) {
+                    datos.push(descarga);
+                },
+                ordenar: function() {
+                    datos.sort();
+                }
+            }
+            
+            return interfaz;
+        });
+        
+        miApp.controller('miControlador', function($scope, descargas) {
+            $scope.descargas = descargas.getDownloads();
+            $scope.nombreUsuario = descargas.nombre;
+            $scope.solicitud = '';
+            
+            $scope.download = function() {
+                descargas.newDonwload($scope.solicitud);
+            }
+            
+            $scope.ordenar = function() {
+                descargas.ordenar();
+            }
+        });
+        
+        miApp.controller('miControlador2', function($scope, descargas) {
+            $scope.items = descargas.getDownloads();
+            $scope.solicitud = '';
+            
+            $scope.descargar = function() {
+                descargas.newDonwload($scope.solicitud);
+            }
+        });
+    </script>
+</head>
+<body data-ng-app="miAplicacion">
+    <div data-ng-controller="miControlador">
+        <br />
+        <h1>Descargas de {{nombreUsuario}}</h1>
+        <ul>
+            <li ng-repeat="item in descargas" ng-bind="item"></li>
+        </ul>
+        <br>
+        <input type="text" ng-model="solicitud" />
+        <button ng-click="download()">Descargar</button> <button ng-click="ordenar()">Ordenar</button>
+    </div>
+    <hr />
+    <div data-ng-controller="miControlador2">
+        <ul>
+            <li ng-repeat="item in items" ng-bind="item"></li>
+        </ul>    
+        <input type="text" ng-model="solicitud" />
+        <button ng-click="descargar()">Descargar</button>
+    </div>
+</body>
+</html>

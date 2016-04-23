@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Modulo 11 - Servicios de Angular JS</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+    
+    <script type="text/javascript">
+        var miApp = angular.module('miAplicacion', []);
+        
+        miApp.service('prueba', function() {
+            this.info = 'Servicio prueba';
+            this.saludo = function() {
+                return 'Hola Mundo !!!';
+            }
+        });
+        
+        miApp.service('calculadora', function() {
+            this.suma = function(a, b) { return (a + b); };
+            this.resta = function(a, b) { return (a - b); };
+            this.division = function(a, b) { return (a / b); };
+            this.multiplicacion = function(a, b) { return (a * b); };
+        });
+        
+        miApp.controller('miControlador', function($scope, prueba, calculadora) {
+            $scope.saludo = prueba.saludo();
+            $scope.mensaje = prueba.info;
+            $scope.numero1 = 0;
+            $scope.numero2 = 0;
+            $scope.resultado = 0;
+            $scope.resta = function() {
+                $scope.resultado = calculadora.resta($scope.numero1, $scope.numero2);
+            }
+        });
+        
+        miApp.controller('miControlador2', function($scope, prueba) {
+            $scope.info = prueba.info;
+            $scope.obj = prueba;
+        });
+    </script>
+</head>
+<body data-ng-app="miAplicacion">
+    <div data-ng-controller="miControlador">
+        <h1>{{saludo}}</h1>
+        <h2>{{mensaje}}</h2>
+        <br />
+        <input ng-model="numero1" ng-change="resta()" />
+        <br />
+        <input ng-model="numero2" ng-change="resta()" />
+        <br />
+        {{resultado}}
+    </div>
+    <hr />
+    <div data-ng-controller="miControlador2">
+        <input ng-model="info" />
+        {{info}}
+        <br />
+        {{obj.saludo()}}
+        <br />
+        {{obj.info}}
+    </div>
+</body>
+</html>

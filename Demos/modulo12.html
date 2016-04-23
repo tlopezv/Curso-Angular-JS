@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Modulo 12 - Animaciones y CSS con Angular JS</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <script type="text/javascript">
+        var miApp = angular.module('miAplicacion', ['ngAnimate']);
+        
+        miApp.animation('.ejemplo5', function() {
+            return {
+                enter: function(element, done) {
+                    element.css({'color': 'red', 'font-size' : '20px', opacity: 1 });
+                    element.opacity = 1;
+                    element.addClass('ejemplo3');
+                    done();
+                },
+                leave: function(element, done) {
+                    element.css({'color': 'blue', 'font-size' : '2px', opacity: 0 });
+                    element.opacity = 0;
+                    element.addClass('ejemplo3');
+                    done();
+                }
+            }
+        });
+        
+        miApp.controller('miControlador', function($scope) {
+            $scope.estado = true;
+            $scope.miclase = '';
+            $scope.buscar = '';
+            $scope.visible = true;
+            $scope.visible2 = true;
+            $scope.agenda = [{
+                nombre: 'Juan',
+                apellidos: 'Sanz Sánchez',
+                telefono: '555-000-123',
+                oficina: 'Madrid',
+                disponible : true
+            }, {
+                nombre: 'Sandra',
+                apellidos: 'Rojas Sánchez',
+                telefono: '555-989-122',
+                oficina: 'Barcelona',
+                disponible : true
+            }, {
+                nombre: 'Eva',
+                apellidos: 'Muñoz Sanz',
+                telefono: '556-090-122',
+                oficina: 'Madrid',
+                disponible : false
+            }, {
+                nombre: 'Samuel',
+                apellidos: 'Solano García',
+                telefono: '565-788-122',
+                oficina: 'Valencia',
+                disponible : false
+            }, {
+                nombre: 'Antonio',
+                apellidos: 'Calderon Plaza',
+                telefono: '456-789-122',
+                oficina: 'Barcelona',
+                disponible : true
+            }];
+        });
+    </script>
+</head>
+<body data-ng-app="miAplicacion">
+    <div data-ng-controller="miControlador" style="padding:40px;">
+        <br />
+        <h4>Ejemplo 1</h4>
+        <input type="checkbox" ng-model="estado" /> Elemento Visible
+        <div class="ejemplo1" ng-show="estado">
+            <p>Curso de Angular JS</p>
+        </div>
+        <hr />
+        <h4>Ejemplo 2</h4>
+        <button type="button" ng-click="miclase='ejemplo2'">Añadir Clase</button>
+        <button type="button" ng-click="miclase=''">Eliminar Clase</button>
+        <br />
+        <p ng-class="miclase">Texto Animado mediante CSS y la directiva ng-class</p>
+        <hr />
+        <h4>Ejemplo 3</h4>
+        <input ng-model="buscar" />
+        <table>
+            <tr ng-repeat="registro in agenda | filter : buscar" class="animate">
+                <td>{{registro.nombre}}</td>
+                <td>{{registro.apellidos}}</td>
+                <td>{{registro.telefono}}</td>
+            </tr>
+        </table>
+        <hr />
+        <h1 ng-if="visible" class="ejemplo3">Curso de Angular, animaciones</h1>
+        <br />
+        <button ng-click="visible=!visible">Cambiar</button>
+        <hr />
+        <h4>Ejemplo 4</h4>
+        <table>
+            <tr ng-repeat="registro in agenda | filter : buscar" class="ejemplo3">
+                <td>{{registro.nombre}}</td>
+                <td>{{registro.apellidos}}</td>
+                <td>{{registro.telefono}}</td>
+            </tr>
+        </table>
+        <hr />
+        <h4>Ejemplo 5</h4>
+        <h1 ng-if="visible2" class="ejemplo5class ejemplo5">Curso de Angular, animaciones</h1>
+        <br />
+        <button ng-click="visible2=!visible2">Cambiar</button>        
+    </div>
+</body>
